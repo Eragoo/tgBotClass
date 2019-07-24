@@ -2,7 +2,7 @@
 
 class TelegramBot {
 
-    private $token = '592148368:AAEOCKL9iyi1BegRhkt1pPC8v8oLdMm68bw';
+    private $token = 'TOKEN';
     private $default_url = 'https://api.telegram.org/bot';
     private $errors = [];
 
@@ -33,6 +33,9 @@ class TelegramBot {
             $response = json_decode(curl_exec($s));
             return $response;
         }
+
+
+
 
     }
 
