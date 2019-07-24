@@ -2,7 +2,7 @@
 
 class TelegramBot {
 
-    private $token = '592346368:AAdfhdKL9iyi1BegRhkt1pPC8FVvdLdMm6safbw';
+    private $token = '592148368:AAEOCKL9iyi1BegRhkt1pPC8v8oLdMm68bw';
     private $default_url = 'https://api.telegram.org/bot';
     private $errors = [];
 
@@ -13,9 +13,7 @@ class TelegramBot {
         }elseif ($query == 'sendMessage') {
             return $this->sendMessage($params);
         }else{
-            foreach($errors as $error) {
-                print $error . "\n";
-            }
+            return 'error in query';
         }
     }
 
@@ -38,7 +36,7 @@ class TelegramBot {
 
     private function sendMessage ($params = []) {
         if(! isset($params['chat_id']) or ! isset($params['text'])) {
-            $errors[] .= 'sendMessage params incorrectly';
+            $this->errors[] .= 'sendMessage params incorrectly';
         }else{
             $url = $this->formation_url ('sendMessage', $params);
             $s = curl_init($url);

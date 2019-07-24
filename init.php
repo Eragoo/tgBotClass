@@ -3,13 +3,28 @@
 include "TelegramBotClass.php";
 
 $tg = new TelegramBot;
-$response = $tg->query('getUpdates');
-$chat_id = $response->result[0]->message->chat->id;
-$params = [
-    'chat_id' => $chat_id,
-    'text' => 'kek',
-];
+$update_id;
+while(true){
+    sleep(2);
+    $response = $tg->query('getUpdates', ['offset'=>$update_id + 1]);
+    
+    if(!empty($response->result)){
+        $update_id = $response->result[count($response->result) - 1]->update_id;
+    }
+  
+    $chat_id = $response->result[0]->message->chat->id;
+    $message_id = $response->result[0]->message->message_id;
+    $text = 'lol';
 
-$tg->query('sendMessage', $params);
+    $params = [
+        'chat_id' => $chat_id,
+        'text' => $text,
+        'reply_to_message_id' => $message_id,
+    ];
+
+    $tg->query('sendMessage', $params);
+
+
+}
 
 
