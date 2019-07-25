@@ -2,11 +2,13 @@
 
 include "TelegramBotClass.php";
 
-$tg = new TelegramBot;
+$tg = new TelegramBot('');
 $update_id;
-while(true){
-    sleep(2);
+//while(true){
+    //sleep(2);
     $response = $tg->query('getUpdates', ['offset'=>$update_id + 1]);
+    var_dump($response->result[0]->message->location);
+    exit();
     
     if(!empty($response->result)){
         $update_id = $response->result[count($response->result) - 1]->update_id;
@@ -25,6 +27,6 @@ while(true){
     $tg->query('sendMessage', $params);
 
 
-}
+//}
 
 

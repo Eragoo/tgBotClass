@@ -2,10 +2,13 @@
 
 class TelegramBot {
 
-    private $token = '592148368:AAEOCKL9iyi1BegRhkt1pPC8v8oLdMm68bw';
+    private $token ;
     private $default_url = 'https://api.telegram.org/bot';
     private $errors = [];
 
+    public function __construct($token) {
+        $this->token = $token;
+    }
 
     public function query ($query, $params = []) {
         if($query == 'getUpdates') {
