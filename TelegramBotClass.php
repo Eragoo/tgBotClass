@@ -7,7 +7,7 @@ class TelegramBot {
     private $errors = [];
 
     public function __construct($token) {
-        $this->token = $token;
+        $this->token = $token; 
     }
 
     public function query ($query, $params = []) {
@@ -49,13 +49,5 @@ class TelegramBot {
         }
 
     }
-
-
-
-
-
-
-
-
 
 }
