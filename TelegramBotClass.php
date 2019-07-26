@@ -11,6 +11,7 @@ class TelegramBot {
     }
 
     public function query ($query, $params = []) {
+      try{
         if($query == 'getUpdates') {
             return $this->getUpdates ($params);
         }elseif ($query == 'sendMessage') {
@@ -20,6 +21,9 @@ class TelegramBot {
         } else{
             return 'error in query';
         }
+      }catch(Exception $e){
+          return $e;  //$e->getMessage() . ' On line: ' . $e->getLine();
+      }
     }
 
     private function formation_url ($query, $params = []) {
@@ -38,9 +42,9 @@ class TelegramBot {
         $result = curl_exec($c);
         $info = curl_getinfo($c);
         if($result == false){
-            //exception
+            throw new Exception('Exception: result = false in getUpdates() method.');
         }elseif($info['http_code'] >= 400){
-            //exception
+            throw new Exception('Exception: http-code >= 400 in getUpdates() method.');
         }else{
             $response = json_decode($result);
             return $response;
@@ -57,9 +61,9 @@ class TelegramBot {
             $result = curl_exec($s);
             $info = curl_getinfo($s);
             if($result == false){
-                //exception
+                throw new Exception('Exception: result = false in sendMessage() method.');
             }elseif($info['http_code'] >= 400){
-                //exception
+                throw new Exception('Exception: http-code >= 400 in sendMessage() method.');
             }else{
                 $response = json_decode($result);
                 return $response;

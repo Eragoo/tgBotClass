@@ -30,7 +30,19 @@
         $this->assertEquals(true, $result['response']->ok);
     }
 
-    
+    public function testQueryExceptionUpdates() {
+        $result = $this->tg->query('getUpdates');
+        $this->assertEquals(true, method_exists($result, 'getMessage'));
+    }
 
 
+    public function testQueryExceptionSend() {
+        $result = $this->tg->query('sendMessage', $this->params);
+        $this->assertEquals(true, method_exists($result, 'getMessage'));
+    }
+
+    public function testQueryExceptionGetMsg() {
+        $result = $this->tg->query('getMessageParams');
+        $this->assertEquals(true, method_exists($result, 'getMessage'));
+    }
  }
