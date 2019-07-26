@@ -15,7 +15,9 @@ class TelegramBot {
             return $this->getUpdates ($params);
         }elseif ($query == 'sendMessage') {
             return $this->sendMessage($params);
-        }else{
+        }elseif ($query == 'getMessageParams') {
+            return $this->getMessageParams($params);
+        } else{
             return 'error in query';
         }
     }
@@ -33,8 +35,16 @@ class TelegramBot {
 
         $c = curl_init($url);
         curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
-        $response = json_decode(curl_exec($c));
-        return $response;
+        $result = curl_exec($c);
+        $info = curl_getinfo($c);
+        if($result == false){
+            //exception
+        }elseif($info['http_code'] >= 400){
+            //exception
+        }else{
+            $response = json_decode($result);
+            return $response;
+        }
     }
 
     private function sendMessage ($params = []) {
@@ -44,9 +54,37 @@ class TelegramBot {
             $url = $this->formation_url ('sendMessage', $params);
             $s = curl_init($url);
             curl_setopt($s, CURLOPT_RETURNTRANSFER, true);
-            $response = json_decode(curl_exec($s));
-            return $response;
+            $result = curl_exec($s);
+            $info = curl_getinfo($s);
+            if($result == false){
+                //exception
+            }elseif($info['http_code'] >= 400){
+                //exception
+            }else{
+                $response = json_decode($result);
+                return $response;
+            }
         }
+
+    }
+
+    private function getMessageParams ($params = []) {
+        $response = $this->getUpdates();
+        if( isset($response->result[0]->message->text) ){
+            $message = $response->result[0]->message->text;
+        }else{
+            $message = $response->result[0]->message->location;
+        }
+        $message_id = $response->result[0]->message->message_id;
+        $chat_id = $response->result[0]->message->chat->id;
+        $user_name = $response->result[0]->message->chat->first_name;
+        $message_params = ['user_name' => $user_name,
+                           'chat_id' => $chat_id,
+                           'message' => $message,
+                           'message_id' => $message_id,
+                           'response' => $response];
+        return $message_params;
+
 
     }
 

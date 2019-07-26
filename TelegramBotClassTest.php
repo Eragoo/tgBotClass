@@ -8,7 +8,7 @@
                        'text' => 'test message'];
 
     protected function setUp() {
-        $this->tg = new TelegramBot('tg_token');
+        $this->tg = new TelegramBot(token);
     }
 
     protected function tearDown() {
@@ -23,6 +23,11 @@
     public function testQuerySuccessSend() {
         $result = $this->tg->query('sendMessage', $this->params);
         $this->assertEquals(true, $result->ok);
+    }
+
+    public function testQuerySuccessGetMsg() {
+        $result = $this->tg->query('getMessageParams');
+        $this->assertEquals(true, $result['response']->ok);
     }
 
     
